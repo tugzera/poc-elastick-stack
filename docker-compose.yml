@@ -29,6 +29,16 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
     networks:
       - jupiter
+  apm:
+    image: docker.elastic.co/apm/apm-server:7.17.0
+    container_name: apm
+    volumes:      
+    - ./apm-server.yml:/usr/share/apm-server/apm-server.yml
+    ports:
+      - "8200:8200"
+    restart: on-failure
+    networks: 
+      - jupiter
 
 networks: 
     jupiter:
