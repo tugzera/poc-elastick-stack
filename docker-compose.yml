@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   elasticsearch:
@@ -15,10 +15,10 @@ services:
       - http.cors.allow-origin="*"
       - discovery.type=single-node
     volumes:
-       - ./.docker/elasticsearch/:/usr/share/elasticsearch/data
+      - ./.docker/elasticsearch/:/usr/share/elasticsearch/data
     networks:
       - jupiter
-      
+
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.0
     container_name: kibana
@@ -32,16 +32,27 @@ services:
   apm:
     image: docker.elastic.co/apm/apm-server:7.17.0
     container_name: apm
-    volumes:      
-    - ./apm-server.yml:/usr/share/apm-server/apm-server.yml
+    volumes:
+      - ./apm-server.yml:/usr/share/apm-server/apm-server.yml
     ports:
       - "8200:8200"
     restart: on-failure
-    networks: 
+    networks:
       - jupiter
+  log-db:
+    container_name: log-db
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - jupiter
+    volumes:
+      - ./.docker/pgdata:/var/lib/postgresql
 
-networks: 
-    jupiter:
-        external: true
-  
-    
+networks:
+  jupiter:
+    external: true

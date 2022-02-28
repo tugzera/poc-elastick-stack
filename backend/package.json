@@ -5,6 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "elastic-apm-node": "^3.29.0",
-    "fastify": "^3.27.2"
+    "fastify": "^3.27.2",
+    "fastify-cors": "^6.0.3",
+    "pg": "^8.7.3",
+    "typeorm": "^0.2.44"
   }
 }
