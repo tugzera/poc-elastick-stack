@@ -1,39 +1,49 @@
 import { init as initApm } from "@elastic/apm-rum";
 import { useEffect } from "react";
 
-import { create, password, test } from "./services/api";
+import { test } from "./services/api";
+
+const apm = initApm({
+  serverUrl: "http://localhost:8200/",
+  serviceName: "frontend",
+  environment: "production",
+  serviceVersion: "0.9",
+  logLevel: "debug",
+  distributedTracingOrigins: ["http://localhost:3333"],
+});
+
+const onClick = async () => {
+  console.log("ENTRAAAAA");
+  const res = await test();
+  console.log("AKIIIIII", res);
+};
 
 function App() {
   useEffect(() => {
-    initApm({
-      serviceName: "front",
-      serverUrl: "http://localhost:8200",
-      logLevel: "debug",
-    });
-  }, []);
+    const res = test();
+    console.log("AQUI", res);
+  });
 
   return (
-    <>
-      <button onClick={password}>Password</button>
-      <button onClick={create}>Create</button>
-      <button onClick={test}>Test</button>
-    </>
+    <button onClick={onClick}>Test</button>
+    // <BrowserRouter>
+    //   <div>
+    //     <ul>
+    //       <li>
+    //         <Link to="/home">Home</Link>
+    //       </li>
+    //       <li>
+    //         <Link to="/page">Page</Link>
+    //       </li>
+    //     </ul>
+
+    //     <hr />
+
+    //     <ApmRoute exact path="/home" component={HomePage} />
+    //     <ApmRoute path="/page" component={Page} />
+    //   </div>
+    // </BrowserRouter>
   );
 }
 
 export default App;
-
-// import { ApmRoute } from "@elastic/apm-rum-react";
-
-// import { HomePage, Page } from "./components";
-
-// function App() {
-//   return (
-//     <>
-//       <ApmRoute path="/home" component={HomePage} />
-//       <ApmRoute path="/page" component={Page} />
-//     </>
-//   );
-// }
-
-// export default App;

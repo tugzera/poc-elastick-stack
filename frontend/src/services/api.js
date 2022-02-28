@@ -1,21 +1,26 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: "http://localhost:3333/" });
+const api = axios.create({
+  baseURL: "http://localhost:3333/",
+});
 
 export const password = async () => {
-  await api.post(`password`, {
+  const { data } = await api.post(`password`, {
     name: "oi",
     test: "test",
   });
+  return data;
 };
 
 export const create = async () => {
-  await api.post(`create`, {
+  const { data } = await api.post(`create`, {
     name: "oi",
     test: "test",
   });
+  return data;
 };
 
 export const test = async () => {
-  await api.get(`test`);
+  const { data } = await api.get(`test`);
+  return data;
 };
