@@ -1,6 +1,7 @@
 const apm = require("elastic-apm-node").start({
   serverUrl: "http://localhost:8200/",
-  serviceName: "log",
+  serviceVersion: "0.9",
+  serviceName: "backend",
   environment: "production",
   logLevel: "debug",
   captureBody: "all",
@@ -22,6 +23,9 @@ apm.middleware.connect();
 fastify.register(require("fastify-cors"), { origin: "*" });
 
 fastify.addHook("onResponse", (req, rep, done) => {
+  rep.header({
+    "Access-Control-Request-Headers": "traceparent, tracestate",
+  });
   if (rep.statusCode === 500) {
     apm.captureError(req.body);
   }
@@ -37,7 +41,7 @@ fastify.post("/password", async (request, reply) => {
 });
 
 fastify.post("/create", async (request, reply) => {
-  await timeOut();
+  // await timeOut();
   const connection = getConnection();
   await connection.createQueryRunner().query(`select 1`);
   reply.send({ test: "Ola mundo" });
